@@ -1,0 +1,33 @@
+////////Алгоритм Евклида 
+int gcd1(int a, int b)
+{
+	if (b == 0)
+		return a;
+	return (b, a % b);
+}
+
+////////Расширенный алгоритм Евклида 
+int gcdex(int a, int b, int &x, int &y)
+{
+	if (b == 0)
+	{
+		x = 1;
+		y = 0;
+		return a;
+	}
+	int x1, y1;
+	int d = gcdex(b, a % b, x1, y1);
+	x = y1;
+	y = x1 - y1 * (a / b);
+	return d;
+}
+
+////////Обратный элемент a кольца по модулю n
+void inverse(int a, int n)
+{
+	int x, y;
+	if (gcdex(a, n, x, y) == 1)
+		std::cout << x << std::endl;
+	else
+		std::cout << "inverse element doesn't exist" << std::endl;
+}
