@@ -14,7 +14,7 @@ int gcdex(int a, int b, int &x, int &y)
 		x = 1; y = 0;
 		return a;
 	}
-	int x1 = 0, y1 = 1, x2 = 1, y2 = 0;
+	int x1(0), y1(1), x2(1), y2(0);
 	int r, q;
 	while (b > 0)
 	{
