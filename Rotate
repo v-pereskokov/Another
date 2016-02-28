@@ -16,7 +16,6 @@ void rotate(T begin, T end, int k)
 			for (int i = 1; i <= k; i++)
 			{
 				T c(end);
-
 				while (begin != end)
 				{
 					swap(*end--, *end);
