@@ -22,7 +22,6 @@ void rotate(T begin, T end, int k)
 			else if (begin == first)
 				first = now;
 		}
-		
 	}
 	else if (k < 0)
 	{
