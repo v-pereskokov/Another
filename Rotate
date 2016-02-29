@@ -18,8 +18,7 @@ void rotate(T begin, T end, int k)
 				T temp(begin);
 				while (begin != end)
 				{
-					swap(*begin, *end);
-					begin++;
+					swap(*begin++, *end);
 				}
 				begin = temp;
 			}
@@ -31,8 +30,7 @@ void rotate(T begin, T end, int k)
 				T temp(end);
 				while (begin != end)
 				{
-					swap(*begin, *end);
-					end--;
+					swap(*begin, *end--);
 				}
 				end = temp;
 			}
