@@ -40,7 +40,7 @@ void rotate(T begin, T end, int k)
 		}
 		else if (k < 0)
 		{
-			for (size_t i = 1; i <= gcd(k, difference); i++)
+			for (size_t i = 1; i <= gcd(abs(k), difference); i++)
 			{
 				T temp(end);
 				while (begin != end)
