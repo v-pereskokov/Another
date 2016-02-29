@@ -23,13 +23,13 @@ void swap(T &a, T &b)
 template <typename T>
 void rotate(T begin, T end, int k)
 {
-	int difference = end - begin;
-	if (begin != end--)
+	int difference = end - begin; //Число раз - 1 мы меняем цифры, чтобы сдвинуть число на одну поизицию влево(вправо) = число "пропусков" между цифрами в последовательности
+	if (begin != end--) //Пример: 1 2 3 4; число пропусков равно 3
 	{
 		if (k > 0)
 		{
-			for (size_t i = 1; i <= gcd(k, difference - 1); i++)
-			{
+			for (size_t i = 1; i <= gcd(k, difference - 1); i++) //Находим НОД числа сдвигов и число "пропусков"(как деление по модулю difference - 1).
+			{//И в итоге мы повторяем цикл не over 999999, а всего лишь 999999 по модулю difference - 1. И это во много раз меньше. 
 				T temp(begin);
 				while (begin != end)
 				{
