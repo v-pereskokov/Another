@@ -1,17 +1,3 @@
-int gcd(int a, int b)
-{
-	if (b == 0)
-		return a;
-	int q, r;
-	while (b > 0)
-	{
-		q = a / b;
-		r = a % b;
-		a = b; b = r;
-	}
-	return a;
-}
-
 template <typename T>
 void swap(T &a, T &b)
 {
@@ -23,13 +9,13 @@ void swap(T &a, T &b)
 template <typename T>
 void rotate(T begin, T end, int k)
 {
-	int difference = end - begin; //Число раз - 1 мы меняем цифры, чтобы сдвинуть последовательность на одну поизицию влево(вправо) = число "пропусков" между цифрами в последовательности
-	if (begin != end--) //Пример: 1 2 3 4; число пропусков равно 3
+	int difference = end - begin;
+	if (begin != end--)
 	{
 		if (k > 0)
 		{
-			for (size_t i = 1; i <= gcd(k, difference); i++) //Находим НОД числа сдвигов и число "пропусков"(как деление по модулю difference - 1).
-			{//И в итоге мы повторяем цикл не over 999999, а всего лишь 999999 по модулю difference. И это во много раз меньше. 
+			for (size_t i = 1; i <= k % (end - begin); i++)
+			{
 				T temp(begin);
 				while (begin != end)
 				{
@@ -40,7 +26,7 @@ void rotate(T begin, T end, int k)
 		}
 		else if (k < 0)
 		{
-			for (size_t i = 1; i <= gcd(abs(k), difference); i++)
+			for (size_t i = 1; i <= abs(k) % (end - begin); i++)
 			{
 				T temp(end);
 				while (begin != end)
