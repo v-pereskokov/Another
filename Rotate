@@ -10,7 +10,6 @@ template <typename T>
 void rotate(T begin, T end, int k)
 {
 	int difference(end - begin);
-	
 	if (k > 0)
 	{
 		T first(end - (k % difference));
