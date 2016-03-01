@@ -14,26 +14,18 @@ void rotate(T begin, T end, int k)
 	{
 		T first(end - (k % difference));
 		T now(end - (k % difference));
-		while (begin != now)
-		{
-			swap(*begin++, *now++);
-			if (now == end)
-				now = first;
-			else if (begin == first)
-				first = now;
-		}
 	}
 	else if (k < 0)
 	{
 		T first(begin + (abs(k) % difference));
 		T now(begin + (abs(k) % difference));
-		while (begin != now)
-		{
-			swap(*begin++, *now++);
-			if (now == end)
-				now = first;
-			else if (begin == first)
-				first = now;
-		}
 	}
+       while (begin != now)
+       {
+	       swap(*begin++, *now++);
+		if (now == end)
+			now = first;
+		else if (begin == first)
+			first = now;
+		}
 }
