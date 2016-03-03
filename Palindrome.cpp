@@ -19,7 +19,7 @@ int main()
 	std::string string;
 	while (string != "stop")
 	{
-		if (string != "stop")
+		if (string == "stop")
 			break;
 		std::getline(std::cin, string);
 		if (searchPalindrome(string))
