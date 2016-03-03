@@ -7,15 +7,15 @@ bool searchPalindrome(T string)
 	auto it1(string.begin()), it2(string.end());
 	if (it1 == it2)
 		return false;
-	it2--;
+	--it2;
 	while (it1 != it2)
 	{
 		if (*it1 != *(it2))
 			return false;
-		it1++;
+		++it1;
 		if (it1 == it2)
 			break;
-		it2--;
+		--it2;
 		if (it1 == it2)
 			break;
 	}
