@@ -1,8 +1,7 @@
 #include <iostream>
 #include <string>
 
-template<typename T>
-bool searchPalindrome(T string)
+bool searchPalindrome(std::string string)
 {
 	auto it1(string.begin()), it2(string.end());
 	if (it1 == it2)
