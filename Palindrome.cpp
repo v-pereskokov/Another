@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-bool searchPalindrome(std::string string)
+bool searchPalindrome(const std::string &string)
 {
 	auto it1(string.begin()), it2(string.end());
 	while (it1 < it2)
