@@ -17,9 +17,9 @@ int main()
 	std::string string;
 	while (string != "stop")
 	{
+		std::getline(std::cin, string);
 		if (string == "stop")
 			break;
-		std::getline(std::cin, string);
 		if (searchPalindrome(string))
 			std::cout << "TRUE! \n";
 		else
