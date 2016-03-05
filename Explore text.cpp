@@ -24,9 +24,9 @@ void explore(std::fstream &file)
 
 int main()
 {
-	std::string string;
-	std::cin >> string;
-	std::fstream file(string);
+	std::string fileName;
+	std::cin >> fileName;
+	std::fstream file(fileName);
 	explore(file);
 	file.close();
 	system("pause");
