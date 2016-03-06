@@ -5,7 +5,7 @@
 
 void explore(std::fstream &file)
 {
-	std::string string, signs = ".,!?;:| \t";
+	std::string string, signs = ".,!?;:|{}[]<>~`()*&^%$#@+- ";
 	std::map<std::string, size_t> Occurence;
 	while (file >> string)
 	{
