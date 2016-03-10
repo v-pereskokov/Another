@@ -23,9 +23,7 @@ void explore(std::fstream &file)
     std::string string;
     std::map<std::string, size_t> occurence;
     while (file >> string)
-    {
         search_word(occurence, string);
-    }
     for (const auto &temp : occurence)
         std::cout << "Number of < " << temp.first << " > in text is : " << temp.second << std::endl;
 }
