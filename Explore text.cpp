@@ -3,10 +3,11 @@
 #include <fstream>
 #include <map>
 
-template<typename T>
-T search_word(T &map, const std::string &string)
+typedef std::map<std::string, size_t> M;
+
+M search_word(M &map, const std::string &string)
 {
-    std::string signs = ".,!?;:|{}[]<>~`()*&^%$#@+- ";
+    std::string signs = ".,!?;:|{}[]<>~`()*&^%$#@+-/\\ ";
     for (std::string::size_type pos = 0;
          (pos = string.find_first_not_of(signs, pos)) != std::string::npos;)
     {
