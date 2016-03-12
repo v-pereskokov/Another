@@ -3,9 +3,9 @@
 #include <fstream>
 #include <map>
 
-typedef std::map<std::string, size_t> M;
+typedef std::map<std::string, size_t> map;
 
-M search_word(M &map, const std::string &string)
+map search_word(map &map, const std::string &string)
 {
     std::string signs = ".,!?;:|{}[]<>~`()*&^%$#@+-/\\ ";
     for (std::string::size_type pos = 0;
