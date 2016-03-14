@@ -21,7 +21,6 @@ void word_ambit(std::fstream &file, const std::string &word, int n)
 {
     if (n > 0)
     {
-        std::vector<std::string> local(2 * n + 1);
         std::string string;
         size_t i(0); // Index of word in vector
         size_t k(0); // Number of words in text
@@ -30,6 +29,7 @@ void word_ambit(std::fstream &file, const std::string &word, int n)
         size_t count(0); // Number of matches
         while (file >> string)
         {
+            vector local(2 * n + 1);
             pos += string.length() + 1;
             if (i == n + 1)
             {
@@ -52,6 +52,7 @@ void word_ambit(std::fstream &file, const std::string &word, int n)
                     std::cout << temp << " ";
                 std::cout << std::endl;
                 file.seekp(pos, std::ios::beg);
+                local.clear();
                 i = 0;
                 ++count;
             }
