@@ -49,7 +49,7 @@ void word_ambit(std::fstream &file, const std::string &word, size_t n)
                 std::cout << temp << " ";
             std::cout << std::endl;
             local.clear();
-            file.seekg(pos);
+            file.seekp(pos, std::ios::beg);
             i = 0;
             ++count;
         }
