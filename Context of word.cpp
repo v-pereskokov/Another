@@ -2,8 +2,8 @@
 #include <fstream>
 #include <vector>
 
-typedef std::vector<std::string> vector;
-vector push_word(vector &vector, const std::string &string, size_t i)
+typedef std::vector<std::string> vector_string_;
+vector_string_ push_word(vector_string_ &vector, const std::string &string, size_t i)
 {
     std::string signs = ".,!?;|{}[]<>~`()*&^%$#@+-/\\ ";
     for (std::string::size_type pos = 0;
@@ -29,7 +29,7 @@ void word_ambit(std::fstream &file, const std::string &word, int n)
         size_t count(0); // Number of matches
         while (file >> string)
         {
-            vector local(2 * n + 1);
+            vector_string_ local(2 * n + 1);
             pos += string.length() + 1;
             if (i == n + 1)
             {
