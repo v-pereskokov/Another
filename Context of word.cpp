@@ -81,6 +81,7 @@ int main()
     std::cout << "Number of context : ";
     int n;
     std::cin >> n;
-    word_ambit(file, word, n);    file.close();
+    word_ambit(file, word, n);    
+    file.close();
     return 0;
 }
