@@ -70,7 +70,10 @@ int main()
     std::cout << "Word : ";
     std::string word;
     std::cin >> word;
-    word_ambit(file, word, 4);
+    std::cout << "Number of context : ";
+    size_t n;
+    std::cin >> n;
+    word_ambit(file, word, n);
     file.close();
     return 0;
 }
