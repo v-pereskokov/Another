@@ -39,6 +39,14 @@ std::string search_word(const std::string &string)
     return result;
 }
 
+vector_string is_move(vector_string &vector, size_t n)
+{
+    if (vector.size() == n)
+        for (size_t t(0); t < n; t++)
+            vector[t] = vector[t + 1];
+    return vector;
+}
+
 void word_ambit(std::fstream &file, std::string &word, int n)
 {
     if (n < 0)
@@ -50,6 +58,7 @@ void word_ambit(std::fstream &file, std::string &word, int n)
     size_t match(0); // Number of word in the text
     size_t line(0); // Number of lines
     size_t i(0); // Number of out lines
+    size_t j(0); // Index of words in vector
     while (file.good())
     {
         std::getline(file, string);
@@ -76,9 +85,11 @@ void word_ambit(std::fstream &file, std::string &word, int n)
             size_t pos(0); // Position in the text
             std::stringstream text(string);
             std::string temp;
+            is_move(local, n + 1);
             while (text >> temp)
             {
                 temp = search_word(temp);
+                local.insert(local.begin(), temp);
             }
             local.clear();
         }
