@@ -54,7 +54,7 @@ void word_ambit(std::fstream &file, const std::string &word, size_t n)
         }
     }
     if (count == 0)
-        std::cout << "No match!!" << std::endl;
+        std::cout << "No match!" << std::endl;
 }
 
 int main()
