@@ -55,6 +55,8 @@ void word_ambit(std::fstream &file, std::string &word, int n)
         return;
     }
     std::string string; // String of the text
+    size_t pos_file(0); // Position of file in the text
+    size_t pos_line(0); // Position of line in the text
     size_t match(0); // Number of word in the text
     size_t line(0); // Number of lines
     size_t i(0); // Number of out lines
@@ -63,6 +65,7 @@ void word_ambit(std::fstream &file, std::string &word, int n)
     {
         std::getline(file, string);
         ++line;
+        pos_file += string.length();
         if (n == 0)
         {
             size_t count(find_value_n(string.begin(), string.end(), word.begin(), word.end()));
@@ -82,14 +85,33 @@ void word_ambit(std::fstream &file, std::string &word, int n)
         else if (n > 0)
         {
             vector_string local(2 * n + 1);
-            size_t pos(0); // Position in the text
             std::stringstream text(string);
             std::string temp;
             is_move(local, n + 1);
             while (text >> temp)
             {
+                pos_line += temp.length();
                 temp = search_word(temp);
+                is_move(local, n + 1);
                 local.insert(local.begin(), temp);
+                if (temp == word)
+                {
+                    ++match;
+                    size_t k(0);
+                    while ((text >> temp) || (k++ < n))
+                    {
+                        if ((!(text >> temp)) && (k != n))
+                        {
+                            if (std::getline(file, string))
+                                ++line;
+                        }
+                        local.insert(local.begin(), temp);
+                    }
+                    std::cout << ++i << ". ";
+                    for (const auto& out_vect : local)
+                        std::cout << out_vect << " ";
+                    std::cout << " \\\\ In " << line << " line." << std::endl;
+                }
             }
             local.clear();
         }
