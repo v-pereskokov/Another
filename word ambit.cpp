@@ -23,10 +23,10 @@ void word_ambit(std::fstream &file, const std::string &word, size_t n)
     std::vector<std::string> local(2 * n + 1);
     std::string string;
     size_t i(0); // Index of word in vector
-    size_t k(0); // Counter of words in text
-    size_t l(0);
+    size_t k(0); // Number of words in text
+    size_t l(0); // Number of print line
     size_t pos(0); // Position in text
-    size_t count(0);
+    size_t count(0); // Number of matches
     while (file >> string)
     {
         pos += string.length() + 1;
