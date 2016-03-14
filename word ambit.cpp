@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <cctype>
 
 typedef std::vector<std::string> vector;
 vector push_word(vector &vector, const std::string &string, size_t i)
