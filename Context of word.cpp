@@ -39,11 +39,12 @@ std::string explore_word(const std::string &string)
     return result;
 }
 
-vector_string is_move(vector_string &vector, size_t n)
+
+
+vector_string move(vector_string &vector, size_t n)
 {
-    if (vector.size() == n)
-        for (size_t t(0); t < n; t++)
-            vector[t] = vector[t + 1];
+    for (size_t i(0); i < n - 1; i++)
+        vector[i] = vector[i + 1];
     return vector;
 }
 
@@ -59,11 +60,10 @@ void context(std::fstream &file, std::string &word, int n)
     size_t match(0); // Number of word in the text
     size_t line(0); // Number of lines
     size_t i(0); // Number of out lines(n = 0) or Index of words in vector(n > 0)
-    while (file.good())
+    if (n == 0)
     {
-        if (n == 0)
+        while (std::getline(file, string))
         {
-            std::getline(file, string);
             ++line;
             size_t count(find_value_n(string.begin(), string.end(), word.begin(), word.end()));
             if (count > 1)
@@ -79,28 +79,32 @@ void context(std::fstream &file, std::string &word, int n)
                 std::cout << word << " // In " << line << " line." << std::endl;
             }
         }
-        else if (n > 0)
+    }
+    else if (n > 0)
+    {
+        vector_string local(2 * n + 3);
+        while (file >> string)
         {
-            vector_string local(2 * n + 1);
-            std::string temp;
-            while (file >> temp)
+            pos_file += string.length();
+            if (i == n + 1)
             {
-                pos_file += temp.length();
-                is_move(local, n + 1);
-                local[i++] = temp;
-                if (temp == word)
-                {
-                    ++match;
-                    size_t k(0);
-                    while ((file >> temp) && (k++ != n))
-                    {
-                        local[k + n + 1] = temp;
-                    }
-                    for (const auto &c : local)
-                        std::cout << c << " ";
-                    std::cout << std::endl;
-                    local.clear();
-                }
+                move(local, n + 1);
+                i = n;
+            }
+            local[i++] = string;
+            if (string == word)
+            {
+                ++match;
+                size_t k(0);
+                while ((file >> string) && (k++ < n + 1))
+                    local[k + n + 2] = string;
+                for (const auto &c : local)
+                    std::cout << c << " ";
+                std::cout << std::endl;
+                file.seekg(pos_file);
+                i = 0;
+                local.clear();
+                vector_string local(2 * n + 3);
             }
         }
     }
@@ -121,7 +125,7 @@ int main()
     std::cout << "Word : ";
     std::string word;
     std::cin >> word;
-    std::cout << "Number of word context : ";
+    std::cout << "Number of words context : ";
     int n;
     std::cin >> n;
     context(file, word, n);
