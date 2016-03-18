@@ -85,7 +85,7 @@ void context(std::fstream &file, std::string &word, int n)
         vector_string local(2 * n + 3);
         while (file >> string)
         {
-            pos_file += string.length();
+            pos_file += string.length() + 1;
             if (i == n + 1)
             {
                 move(local, n + 1);
@@ -101,10 +101,8 @@ void context(std::fstream &file, std::string &word, int n)
                 for (const auto &c : local)
                     std::cout << c << " ";
                 std::cout << std::endl;
-                file.seekg(pos_file);
+                file.seekp(pos_file, std::ios::beg);
                 i = 0;
-                local.clear();
-                vector_string local(2 * n + 3);
             }
         }
     }
