@@ -24,7 +24,7 @@ size_t find_value_n(IT begin1, IT end1, IT begin2, IT end2)
     return count;
 }
 
-std::string search_word(const std::string &string)
+std::string explore_word(const std::string &string)
 {
     std::string signs = ".,!?;|{}[]<>~`()*&^%$#@+-/\\ ";
     std::string result;
@@ -47,7 +47,7 @@ vector_string is_move(vector_string &vector, size_t n)
     return vector;
 }
 
-void word_ambit(std::fstream &file, std::string &word, int n)
+void context(std::fstream &file, std::string &word, int n)
 {
     if (n < 0)
     {
@@ -55,65 +55,53 @@ void word_ambit(std::fstream &file, std::string &word, int n)
         return;
     }
     std::string string; // String of the text
-    size_t pos_file(0); // Position of file in the text
-    size_t pos_line(0); // Position of line in the text
+    size_t pos_file(0); // Position of line in the text
     size_t match(0); // Number of word in the text
     size_t line(0); // Number of lines
-    size_t i(0); // Number of out lines
-    size_t j(0); // Index of words in vector
+    size_t i(0); // Number of out lines(n = 0) or Index of words in vector(n > 0)
     while (file.good())
     {
-        std::getline(file, string);
-        ++line;
-        pos_file += string.length();
         if (n == 0)
         {
+            std::getline(file, string);
+            ++line;
             size_t count(find_value_n(string.begin(), string.end(), word.begin(), word.end()));
             if (count > 1)
             {
                 ++match;
                 std::cout << ++i << ". ";
-                std::cout << word << " \\\\ In " << line << " line. Number of word in line is : " << count << std::endl;
+                std::cout << word << " // In " << line << " line. Number of word in line is : " << count << std::endl;
             }
             else if (count == 1)
             {
                 ++match;
                 std::cout << ++i << ". ";
-                std::cout << word << " \\\\ In " << line << " line." << std::endl;
+                std::cout << word << " // In " << line << " line." << std::endl;
             }
         }
         else if (n > 0)
         {
             vector_string local(2 * n + 1);
-            std::stringstream text(string);
             std::string temp;
-            is_move(local, n + 1);
-            while (text >> temp)
+            while (file >> temp)
             {
-                pos_line += temp.length();
-                temp = search_word(temp);
+                pos_file += temp.length();
                 is_move(local, n + 1);
-                local.insert(local.begin(), temp);
+                local[i++] = temp;
                 if (temp == word)
                 {
                     ++match;
                     size_t k(0);
-                    while ((text >> temp) || (k++ < n))
+                    while ((file >> temp) && (k++ != n))
                     {
-                        if ((!(text >> temp)) && (k != n))
-                        {
-                            if (std::getline(file, string))
-                                ++line;
-                        }
-                        local.insert(local.begin(), temp);
+                        local[k + n + 1] = temp;
                     }
-                    std::cout << ++i << ". ";
-                    for (const auto& out_vect : local)
-                        std::cout << out_vect << " ";
-                    std::cout << " \\\\ In " << line << " line." << std::endl;
+                    for (const auto &c : local)
+                        std::cout << c << " ";
+                    std::cout << std::endl;
+                    local.clear();
                 }
             }
-            local.clear();
         }
     }
     if (match == 0)
@@ -136,7 +124,7 @@ int main()
     std::cout << "Number of word context : ";
     int n;
     std::cin >> n;
-    word_ambit(file, word, n);
+    context(file, word, n);
     file.close();
     return 0;
 }
