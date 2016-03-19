@@ -39,8 +39,6 @@ std::string explore_word(const std::string &string)
     return result;
 }
 
-
-
 vector_string move(vector_string &vector, size_t n)
 {
     for (size_t i(0); i < n - 1; i++)
