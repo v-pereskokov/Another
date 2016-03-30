@@ -25,7 +25,7 @@ std::size_t find_value_n(IT begin1, IT end1, IT begin2, IT end2)
 
 vector_string move(vector_string &vector, size_t n)
 {
-    for (std::size_t i = 0; i < n - 1; i++)
+    for (std::size_t i = 0; i < n; i++)
         vector[i] = vector[i + 1];
     return vector;
 }
@@ -71,7 +71,7 @@ void context(std::fstream &file, std::string &word, int n)
             pos_file += string.length() + 1;
             if (j == n + 1)
             {
-                move(local, n + 1);
+                move(local, n);
                 j = n;
             }
             local[j++] = string;
