@@ -6,12 +6,12 @@
 typedef std::vector<std::string> vector_string;
 
 template<typename IT>
-size_t find_value_n(IT begin1, IT end1, IT begin2, IT end2)
+std::size_t find_value_n(IT begin1, IT end1, IT begin2, IT end2)
 {
-    size_t count(0);
+    std::size_t count = 0;
     if (begin2 == end2)
         return count;
-    while (begin1 != end1)
+    while (begin1++ != end1)
     {
         auto it1 = begin1, it2 = begin2;
         while (*it1++ == *it2++)
@@ -19,29 +19,13 @@ size_t find_value_n(IT begin1, IT end1, IT begin2, IT end2)
             if (it2 == end2)
                 ++count;
         }
-        begin1++;
     }
     return count;
 }
 
-std::string explore_word(const std::string &string)
-{
-    std::string signs = ".,!?;|{}[]<>~`()*&^%$#@+-/\\ ";
-    std::string result;
-    for (std::string::size_type pos = 0;
-         (pos = string.find_first_not_of(signs, pos)) != std::string::npos;)
-    {
-        auto n = pos;
-        pos = string.find_first_of(signs, pos);
-        std::string word = string.substr(n, pos == std::string::npos ? pos : pos - n);
-        result = word;
-    }
-    return result;
-}
-
 vector_string move(vector_string &vector, size_t n)
 {
-    for (size_t i(0); i < n - 1; i++)
+    for (std::size_t i = 0; i < n - 1; i++)
         vector[i] = vector[i + 1];
     return vector;
 }
@@ -54,16 +38,16 @@ void context(std::fstream &file, std::string &word, int n)
         return;
     }
     std::string string; // String of the text
-    size_t pos_file(0); // Position of line in the text
-    size_t match(0); // Number of word in the text
-    size_t line(0); // Number of lines
-    size_t i(0); // Number of out lines(n = 0) or Index of words in vector(n > 0)
+    std::size_t pos_file = 0; // Position of line in the text
+    std::size_t match = 0; // Number of word in the text
+    std::size_t line = 0; // Number of lines
+    std::size_t i = 0; // Number of out lines
     if (n == 0)
     {
         while (std::getline(file, string))
         {
             ++line;
-            size_t count(find_value_n(string.begin(), string.end(), word.begin(), word.end()));
+            size_t count = find_value_n(string.begin(), string.end(), word.begin(), word.end());
             if (count > 1)
             {
                 ++match;
@@ -80,27 +64,28 @@ void context(std::fstream &file, std::string &word, int n)
     }
     else if (n > 0)
     {
-        vector_string local(2 * n + 3);
+        vector_string local(2 * n + 1);
+        std::size_t j = 0; // Index of words in vector(n > 0)
         while (file >> string)
         {
             pos_file += string.length() + 1;
-            if (i == n + 1)
+            if (j == n + 1)
             {
                 move(local, n + 1);
-                i = n;
+                j = n;
             }
-            local[i++] = string;
+            local[j++] = string;
             if (string == word)
             {
                 ++match;
-                size_t k(0);
-                while ((file >> string) && (k++ < n + 1))
-                    local[k + n + 2] = string;
+                std::size_t k = 0;
+                while ((file >> string) && (k++ < n))
+                    local[k + n] = string;
+                std::cout << ++i << ". ";
                 for (const auto &c : local)
                     std::cout << c << " ";
                 std::cout << std::endl;
                 file.seekp(pos_file, std::ios::beg);
-                i = 0;
             }
         }
     }
