@@ -11,10 +11,9 @@ void ToDec(char *vhodnoe_chyslo, int sys1)
 	while (index < strlen(vhodnoe_chyslo))
 	{
 		if (vhodnoe_chyslo[index] == ',')
-			goto jumpzap;
+			break;
 		index++;
 	}
-jumpzap:
 	for (int index1 = index; index1 < strlen(vhodnoe_chyslo); index1++)
 		vhodnoe_chyslo[index1] = vhodnoe_chyslo[index1 + 1]; //Удалаяем запятую
 	double vyhodnoe = 0; //Конечное число в 10 - й сс
@@ -28,10 +27,9 @@ jumpzap:
 			if (vhodnoe_chyslo[index2] == ch[index3])
 			{
 				nomer_bukvy = index3;
-				goto jump1;
+				break;
 			}
 		}
-	jump1:
 		vyhodnoe += (double)nomer_bukvy * pow(sys1, power);
 		index2++;
 		power--;
@@ -45,10 +43,9 @@ void FromDec(char *vhodnoe_chyslo, int sys2)
 	while (index0 < strlen(vhodnoe_chyslo))
 	{
 		if (vhodnoe_chyslo[index0] == ',')
-			goto jumpzap;
+			break;
 		index0++;
 	}
-jumpzap:
 	double numeral = atof(vhodnoe_chyslo); //Число в 10 - й сс записываем в переменную
 	int integer = (int)numeral; //Выделяем целую часть числа
 	double fraction = numeral - (int)numeral; //Выделяем дробную часть числа
@@ -69,11 +66,10 @@ jumpzap:
 					sprintf(buff, "%d", index4);
 				else
 					sprintf(buff, "%c", ch[index4]);
-				goto jump2;
+				break;
 			}
 			index4++;
 		}
-	jump2:
 		strcat(neperevernutoe, buff);
 		index4 = 0;
 		integer /= sys2;
@@ -86,11 +82,10 @@ jumpzap:
 				sprintf(buff, "%d", index4);
 			else
 				sprintf(buff, "%c", ch[index4]);
-			goto jump3;
+			break
 		}
 		index4++;
 	}
-jump3:
 	sprintf(buff, "%d", integer);
 	strcat(neperevernutoe, buff);
 	char perevernutoe[64] = { "" };
@@ -114,11 +109,10 @@ jump3:
 					sprintf(buff2, "%d", index);
 				else
 					sprintf(buff2, "%c", ch[index]);
-				goto jump;
+				break;
 			}
 			index++;
 		}
-	jump:
 		strcat(vhodnoe_chyslo, buff2);
 		fraction -= (int)fraction;
 		index = 0;
@@ -133,10 +127,9 @@ void ResearchNum(char *vhodnoe_chyslo, int sys1)
 	while (index < strlen(number))
 	{
 		if (number[index] == ',')
-			goto jumpzap;
+			break;
 		index++;
 	}
-jumpzap:
 	for (int index1 = index; index1 < strlen(number); index1++)
 		number[index1] = number[index1 + 1]; //Удалаяем запятую
 	int index3 = 0; // Для строки ch
