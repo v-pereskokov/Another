@@ -1,6 +1,6 @@
 #include <iostream>
 
-////////Алгоритм Евклида 
+//Алгоритм Евклида 
 int gcd(int a, int b)
 {
 	if (b == 0)
@@ -8,7 +8,7 @@ int gcd(int a, int b)
 	return gcd(b, a % b);
 }
 
-////////Расширенный алгоритм Евклида 
+//Расширенный алгоритм Евклида 
 int gcdex(int a, int b, int &x, int &y)
 {
 	if (b == 0)
@@ -32,7 +32,7 @@ int gcdex(int a, int b, int &x, int &y)
 	return a;
 }
 
-////////Обратный элемент a кольца по модулю n
+//Обратный элемент a кольца по модулю n
 void inverse(int a, int n)
 {
 	int x, y;
