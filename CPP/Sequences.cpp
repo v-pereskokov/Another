@@ -4,6 +4,12 @@
 #include <vector>
 #include <utility>
 
+/*
+ * Возвращаемые значения
+ * 1. bool - подходит ли N
+ * 2. std::size_t - значение N
+ * 3. std::size_t - индекс строки request для проверки k элементов
+ */
 typedef std::pair<std::pair<bool, std::size_t>, std::size_t> tripple_BSS;
 
 tripple_BSS find_N(const std::string &request, std::size_t index)
@@ -17,12 +23,6 @@ tripple_BSS find_N(const std::string &request, std::size_t index)
     return {{false, -1}, -1};
 }
 
-/*
- * Возвращаемые значения
- * 1. bool - подходит ли N
- * 2. std::size_t - значение N
- * 3. std::size_t - индекс строки request для проверки k элементов
- */
 tripple_BSS check_N(const std::string &request)
 {
     std::size_t i = -1;
