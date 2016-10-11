@@ -1,139 +1,162 @@
-#include <iostream>
 #include <fstream>
+#include <map>
+#include <utility>
+#include <functional>
+#include <boost/any.hpp>
+#include <iostream>
 
 #define methods
-#define enums
 #define params
+#define enums
 
 class DeleterCommentsC {
-  private enums:
-  enum class State {
-    Basic = 1,
-    Quotes,
-    Slash,
-    IgnoreQuote,
-    IgnoreSlash
-  };
-  
-  public methods:
+  typedef void (DeleterCommentsC::*ptr)();
+public methods:
   DeleterCommentsC(std::istream *, std::ostream *);
   
   void deleteComments();
   
-  private methods:
+private enums:
+  enum class State {
+    Basic = 8,
+    Quote = 0,
+    Slash,
+    DoubleSlash,
+    SlashStar
+  };
+
+private methods:
   DeleterCommentsC() = delete;
   
-  State isBasicState(const char, DeleterCommentsC::State);
+  DeleterCommentsC(const DeleterCommentsC &) = delete;
   
-  void slash(char);
+  State whatState(const char);
   
-  void quote(char);
+  void quote();
   
-  void doubleSlash(State);
+  void slash();
   
-  void slashStar(State);
+  void doubleSlash();
   
-  private params:
+  void slashStar();
+  
+  void init();
+  
+ private params:
   std::istream *_in;
   std::ostream *_out;
-  State _state;
+  std::map<std::size_t, ptr> _states;
+  char _compare;
 };
 
 DeleterCommentsC::DeleterCommentsC(std::istream *in, std::ostream *out)
-: _in(in), _out(out), _state(DeleterCommentsC::State::Basic) {}
+: _in(in), _out(out) {
+  init();
+}
 
 void DeleterCommentsC::deleteComments() {
   char symbol;
-  while (!_in->eof()) {
-    _in->get(symbol);
-    switch (_state) {
-      case DeleterCommentsC::State::Basic:
-        _state = isBasicState(symbol, _state);
+  while (_in->get(symbol)) {
+    State state = whatState(symbol);
+    switch (state) {
+      case State::Basic:
+        _out->put(symbol);
         break;
-      case DeleterCommentsC::State::Slash:
-        slash(symbol);
+      case State::Quote:
+        _out->put(symbol);
+        _compare = symbol;
+        _states[static_cast<std::size_t>(state)]();
         break;
-      case DeleterCommentsC::State::Quotes:
-        quote(symbol);
+      case State::Slash:
+        _states[static_cast<std::size_t>(state)]();
+        break;
+      default:
         break;
     }
   }
 }
 
-DeleterCommentsC::State DeleterCommentsC::isBasicState(const char symbol, DeleterCommentsC::State state) {
+DeleterCommentsC::State DeleterCommentsC::whatState(const char symbol) {
   switch (symbol) {
+    case '\'':
     case '"':
-    case ''':
-      _in.put(symbol);
-      return DeleterCommentsC::State::Quotes;
-    case '/':
-      return DeleterCommentsC::State::Slash;
-    default:
-      _out->put(symbol);
-      return state;
-  }
-}
-
-void DeleterCommentsC::slash(char symbol) {
-  char prevSymbol = symbol;
-  _in->get(symbol);
-  switch (symbol) {
-    case '/':
-      _state = DeleterCommentsC::State::IgnoreQuote;
-      doubleSlash(_state);
+      return State::Quote;
       break;
-    case '*':
-      _state = DeleterCommentsC::State::IgnoreSlash;
-      slashStar(_state);
+    case '/':
+      return State::Slash;
       break;
     default:
-      _out->put(prevSymbol);
-      _out->put(symbol);
+      return State::Basic;
       break;
   }
 }
 
-void DeleterCommentsC::quote(const char quote, DeleterCommentsC::State state) {
+void DeleterCommentsC::quote() {
   char symbol;
-  while (state == DeleterCommentsC::State::IgnoreQuote) {
-    _in->get(symbol);
+  while (_in->get(symbol)) {
     _out->put(symbol);
     if (symbol == '\\') {
       _in->get(symbol);
       _out->put(symbol);
-    }
-    else if (symbol == quote) {
-      state = DeleterCommentsC::State::Basic;
-    }
-  }
-}
-
-void DeleterCommentsC::doubleSlash(DeleterCommentsC::State state) {
-  char symbol;
-  while (state == DeleterCommentsC::State::IgnoreSlash) {
-    _in->get(symbol);
-    if (symbol == '\n') {
-      *_out << symbol;
-      state = DeleterCommentsC::State::Basic;
+    } else if (symbol == _compare) {
+      break;
     }
   }
 }
 
-void DeleterCommentsC::slashStar(DeleterCommentsC::State state) {
+void DeleterCommentsC::slash() {
   char symbol;
-  while (state == DeleterCommentsC::State::IgnoreQuote) {
-    _in->get(symbol);
-    if (symbol == '*') {
+  _in->get(symbol);
+  State state = whatState(symbol);
+  switch (state) {
+    case State::Slash:
+      _states[static_cast<std::size_t>(State::DoubleSlash)]();
+      break;
+    case State::SlashStar:
+      _states[static_cast<std::size_t>(state)]();
+      break;
+    default:
+      _out->put('\\');
+      _out->put(symbol);
+  }
+}
+
+void DeleterCommentsC::doubleSlash()
+{
+  char symbol;
+  while (_in->get(symbol)) {
+    if (symbol == '\\') {
+      _in->get(symbol);
+    } else if (symbol == '\n') {
+      _out->put(symbol);
+      break;
+    }
+  }
+}
+void DeleterCommentsC::slashStar()
+{
+  char symbol;
+  while (_in->get(symbol)) {
+    if (symbol == '\\') {
+      _in->get(symbol);
+    } else if (symbol == '*') {
       _in->get(symbol);
       if (symbol == '/') {
-        state = DeleterCommentsC::State::Basic;
+        break;
       }
     }
   }
 }
 
+void DeleterCommentsC::init() {
+  _states[static_cast<std::size_t>(State::Quote)] = &DeleterCommentsC::quote;
+  _states[static_cast<std::size_t>(State::Slash)] = &DeleterCommentsC::slash;
+  _states[static_cast<std::size_t>(State::DoubleSlash)] = &DeleterCommentsC::doubleSlash;
+  _states[static_cast<std::size_t>(State::SlashStar)] = &DeleterCommentsC::slashStar;
+}
+
 int main () {
-  std::ifstream in("test.txt");
+  std::ifstream in("input.txt");
   std::ofstream out("output.txt");
   DeleterCommentsC temp(&in, &out);
   temp.deleteComments();
