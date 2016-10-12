@@ -73,6 +73,7 @@ void DeleterCommentsC::deleteComments() {
         (this->*_states[state])();
         break;
       default:
+        _out->put(symbol);
         break;
     }
   }
@@ -87,6 +88,8 @@ DeleterCommentsC::State DeleterCommentsC::whatState(const char symbol) {
     case '/':
       return State::Slash;
       break;
+    case '*':
+      return State::Star;
     default:
       return State::Basic;
       break;
@@ -109,11 +112,12 @@ void DeleterCommentsC::quote() {
 void DeleterCommentsC::slash() {
   char symbol;
   _in->get(symbol);
-  switch (symbol) {
-    case '/':
+  State state = whatState(symbol);
+  switch (state) {
+    case State::Slash:
       (this->*_states[State::DoubleSlash])();
       break;
-    case '*':
+    case State::Star:
       (this->*_states[State::SlashStar])();
       break;
     default:
