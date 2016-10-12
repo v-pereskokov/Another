@@ -1,9 +1,5 @@
 #include <fstream>
 #include <map>
-#include <utility>
-#include <functional>
-#include <boost/any.hpp>
-#include <iostream>
 
 #define methods
 #define params
