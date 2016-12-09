@@ -30,8 +30,10 @@ class TopStack {
     :_next(node), _data(data) {}
     
     Node& operator=(const Node &copy) {
-      _next = copy._next;
-      _data = copy._data;
+      if (*this != copy) {
+        _next = copy._next;
+        _data = copy._data;
+      }
     }
     
     Node& operator=(Node &&copy) {
