@@ -38,9 +38,11 @@ class TopStack {
     }
     
     Node& operator=(Node &&copy) {
-      _next = copy._next;
-      _data = copy._data;
-      copy._next = heap.make<defPtrNode>(nullptr);
+      if (*this != copy) {
+        _next = copy._next;
+        _data = copy._data;
+        copy._next = heap.make<defPtrNode>(nullptr);
+      }
       return *this;
     }
     
